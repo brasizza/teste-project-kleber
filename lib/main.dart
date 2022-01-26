@@ -49,9 +49,14 @@ class _GoogleSignInAppState extends State<GoogleSignInApp> {
               Padding(
                 padding: const EdgeInsets.only(left: 40, right: 40, top: 40),
                 child: SocialLoginButton(
-                  onTap: () {
+                  onTap: () async {
                     //print("clicou");
-                    controller.googleSignIn();
+                    UserModel? user = await controller.googleSignIn();
+                    if (user != null) {
+                      Navigator.pushReplacementNamed(context, "/home", arguments: user);
+                    } else {
+                      Navigator.pushReplacementNamed(context, "/login");
+                    }
                   },
                 ),
               )

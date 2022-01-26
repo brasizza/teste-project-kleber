@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in_demo/modules/login/login_controller.dart';
+import 'package:google_sign_in_demo/shared/models/user_model.dart';
 import 'package:google_sign_in_demo/shared/themes/app_colors.dart';
 import 'package:google_sign_in_demo/shared/themes/app_images.dart';
 import 'package:google_sign_in_demo/shared/themes/app_text_styles.dart';
@@ -48,8 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Image.asset(AppImages.logomini),
                   Padding(
-                    padding:
-                        const EdgeInsets.only(top: 30, left: 70, right: 70),
+                    padding: const EdgeInsets.only(top: 30, left: 70, right: 70),
                     child: Text(
                       "Organize seus boletos em um só lugar",
                       textAlign: TextAlign.center,
@@ -57,12 +57,16 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.only(left: 40, right: 40, top: 40),
+                    padding: const EdgeInsets.only(left: 40, right: 40, top: 40),
                     child: SocialLoginButton(
-                      onTap: () {
-                        print("clicou");
-                        controller.googleSignIn(context);
+                      onTap: () async {
+                        //print("clicou");
+                        UserModel? user = await controller.googleSignIn();
+                        if (user != null) {
+                          Navigator.pushReplacementNamed(context, "/home", arguments: user);
+                        } else {
+                          Navigator.pushReplacementNamed(context, "/login");
+                        }
                       },
                     ),
                   )
